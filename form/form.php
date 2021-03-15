@@ -1,28 +1,29 @@
 <?php
-try {
-        $pdoConnect = new PDO("mysql:host=localhost;dbname=testform","root","");
-    } catch (PDOException $exc) {
-        echo $exc->getMessage();
-        exit();
-    }
 
     $fname = $_POST['fname'];
     $lname = $_POST['lname'];
     $email = $_POST['email'];
     
   
-    $to = 'test@developers-alliance.com';
-    $subject = 'This is a Mailhog test';
-    $message = 'First Name: ' . $fname . 'Last Name: ' . $lname . 'e-mail: ' . $email  ;
-    $headers = "From: your@email-address.com\r\n";
 
-    mail($to, $subject, $message, $headers);
+    $servername = "localhost";
+    $username = "root";
+    $dbname = "testform";
 
+    try {
+      $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username,'');
+        
+      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $sql = "INSERT INTO users (fname, lname, email)
+      VALUES ('$fname', '$lname', '$email')";
+      $conn->exec($sql);
+        
+      echo "New record created successfully";
+        $conn = null;
 
-    $pdoQuery = "INSERT INTO `users`(`fname`, `lname`, `email`) VALUES (:fname,:lname,:email)";
-    $pdoResult = $pdoConnect->prepare($pdoQuery);
-    
-    $pdoExec = $pdoResult->execute(array(":fname"=>$fname,":lname"=>$lname,":email"=>$email)); 
-    if(isset($email)) echo "Form submitted";
-    else { echo "error";}
+    } catch(PDOException $e) {
+      echo "Connection failed: " . $e->getMessage();
+    }
+
 ?>
+
