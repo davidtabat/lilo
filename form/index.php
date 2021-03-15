@@ -12,6 +12,7 @@
     <input type="text" name="lname" id="last_name" required placeholder="Last Name">
     <input type="email" name="email" id="email" required placeholder="E-mail">
     <input type="submit" name="submit" id="submit" value="submit">
+    <div id="div1"></div>
     <script>
         $(document).ready(function(){
         $("#submit").focusin(function(){
@@ -25,10 +26,19 @@
               data: { "fname": fname, "lname": lname, "email": email, "submit": submit},
               
               success: function(data){
-                    alert(data);
+                    $("#div1").html(data);
                 }
                              
              });
+            
+            
+            $.ajax({
+              type: "POST",
+              url:    "mailtest.php",
+              data: { "fname": fname, "lname": lname, "email": email, "submit": submit}, 
+                
+             });
+            
           });
         });
     </script>
