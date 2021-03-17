@@ -7,15 +7,20 @@
 </head>
 <body>
  <div class="center">
-  <form>
+     <div class="container">
+  <form id="myform">
     <input type="text" name="fname" id="first_name" required placeholder="First Name">
     <input type="text" name="lname" id="last_name" required placeholder="Last Name">
     <input type="email" name="email" id="email" required placeholder="E-mail">
-    <input type="submit" name="submit" id="submit" value="submit">
     <div id="div1"></div>
-    <script>
+      
+  </form>
+         <button id="submit">Submit</button>
+     </div>
+     
+     <script>
         $(document).ready(function(){
-        $("#submit").focusin(function(){
+        $("button").click(function(){
             var fname  = $("#first_name").val();
             var lname   = $("#last_name").val();
             var email       = $("#email").val();
@@ -26,11 +31,18 @@
               data: { "fname": fname, "lname": lname, "email": email, "submit": submit},
               
               success: function(data){
-                    $("#div1").html(data);
+                  if(data==1) {
+                      $("#div1").css('color', '#2ed573');
+                      $("#div1").html("New record was created succesfully");
+                      $("#myform")[0].reset();
+                    }
+                  else {
+                      $("#div1").css('color', '#ff4757');
+                      $("#div1").html(data);
+                  }
                 }
                              
              });
-            
             
             $.ajax({
               type: "POST",
@@ -42,8 +54,6 @@
           });
         });
     </script>
-  </form>
 </div>
-
 </body>
 </html>
